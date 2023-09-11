@@ -7,14 +7,10 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Btn: typeof import('./src/components/btn.vue')['default']
     Button: typeof import('./src/components/Button.vue')['default']
-    copy: typeof import('./src/components/CursorLayer copy.vue')['default']
     CursorLayer: typeof import('./src/components/CursorLayer.vue')['default']
-    Ground: typeof import('./src/components/Ground.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SceneLayer: typeof import('./src/components/SceneLayer.vue')['default']
     TipLayer: typeof import('./src/components/TipLayer.vue')['default']
   }
 }

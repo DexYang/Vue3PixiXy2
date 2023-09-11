@@ -9,6 +9,5 @@ const { width, height } = useWindowSize()
     <Application :width="width" :height="height">
         <CursorLayer />
         <TipLayer />
-        <router-view />
     </Application>
 </template>
