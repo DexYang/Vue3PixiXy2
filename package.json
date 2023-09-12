@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "wasm": "emcc -O2 wasmxy2/entry.cpp -s EXPORTED_FUNCTIONS=\"['_read_map_x', '_read_map_1', '_read_mask', '_read_mask_blend', '_get_hash', '_read_color_pal', '_read_frame', '_malloc', '_free', '_printf']\" -s EXPORTED_RUNTIME_METHODS=\"['ccall','cwrap']\" -o ./public/wasmxy2.js ",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@pixi-essentials/cull": "^2.0.0",
@@ -37,6 +39,7 @@
     "vite": "^4.4.9",
     "vue-tsc": "^1.8.10",
     "pinia": "^2.1.6",
-    "unplugin-vue-components": "^0.25.0"
+    "unplugin-vue-components": "^0.25.0",
+    "unocss": "^0.55.7"
   }
 }

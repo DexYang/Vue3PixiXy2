@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
+import UnoCSS from 'unocss/vite'
 import Vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { compilerOptions, isCustomElement, transformAssetUrls } from 'vue3-pixi'
@@ -28,7 +29,8 @@ export default defineConfig({
             // resolvers: [ElementPlusResolver()],
             extensions: ['vue'],
             dts: true
-        })
+        }),
+        UnoCSS()
     ],
     server: {
         hmr: true

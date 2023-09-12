@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
-import './style.css'
+import 'virtual:uno.css'
 import App from './App.vue'
-
-import '~/elements/viewport'
+import { pinia } from '~/states'
+import '~/elements'
 
 createApp(App)
+    . use(pinia)
     . mount('#app')
