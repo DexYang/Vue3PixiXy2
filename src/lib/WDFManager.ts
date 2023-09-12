@@ -1,12 +1,11 @@
-import { WDF, getWDF } from "~/lib/WDF"
-
+import type { WDF } from '~/lib/WDF'
+import { getWDF } from '~/lib/WDF'
 
 export class WDFManager {
     private static instance: WDFManager
-  
+
     map: Map<string, WDF>
-  
-    
+
     constructor() {
         this.map = new Map()
     }
@@ -16,15 +15,17 @@ export class WDFManager {
         if (!this.map.has(wdf)) {
             wdf_instance = await getWDF(wdf)
             this.map.set(wdf, wdf_instance)
-        } else {
+        }
+        else {
             wdf_instance = this.map.get(wdf)
         }
-    
+
         let hash
-        if (typeof path_or_hash === "string") {
-            if (path_or_hash.startsWith("0x")) {
-                hash= Number.parseInt(path_or_hash, 16)
-            } else {
+        if (typeof path_or_hash === 'string') {
+            if (path_or_hash.startsWith('0x')) {
+                hash = Number.parseInt(path_or_hash, 16)
+            }
+            else {
                 const strBuffer = new TextEncoder().encode(path_or_hash)
                 const strPointer = Module._malloc(strBuffer.length + 1)
                 Module.HEAP8.set(strBuffer, strPointer)
@@ -32,7 +33,7 @@ export class WDFManager {
 
                 const outPointer = Module._malloc(4)
                 // hash = Module._get_hash(strPointer)
-                Module.ccall("get_hash", 
+                Module.ccall('get_hash',
                     null,
                     [Number, Number],
                     [strPointer, outPointer])
@@ -45,7 +46,8 @@ export class WDFManager {
                 Module._free(outPointer)
                 buf = null
             }
-        } else {
+        }
+        else {
             hash = path_or_hash
         }
 
@@ -54,13 +56,11 @@ export class WDFManager {
         const item = await wdf_instance?.get(hash)
         return item
     }
-  
-      
+
     public static getInstance() {
-        if (!WDFManager.instance) {
+        if (!WDFManager.instance)
             WDFManager.instance = new WDFManager()
-        }
-      
+
         return WDFManager.instance
     }
 }

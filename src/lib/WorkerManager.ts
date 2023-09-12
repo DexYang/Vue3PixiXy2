@@ -1,6 +1,5 @@
 // import Worker from "~/lib/Worker.js?worker"
-import { Runner } from "pixi.js"
-
+import { Runner } from 'pixi.js'
 
 export class WorkerManager {
     private static instance: WorkerManager
@@ -9,11 +8,10 @@ export class WorkerManager {
 
     runner: Runner
 
-  
     constructor() {
-        this.runner = new Runner("receive")
-        this.worker =  new Worker("./worker.js")
-        this.worker.onmessage = (e) => this.onmessage(e)
+        this.runner = new Runner('receive')
+        this.worker = new Worker('./worker.js')
+        this.worker.onmessage = e => this.onmessage(e)
     }
 
     destroy() {
@@ -37,12 +35,11 @@ export class WorkerManager {
     onmessage(e: unknown) {
         this.runner.emit(e)
     }
-    
+
     public static getInstance() {
-        if (!WorkerManager.instance) {
+        if (!WorkerManager.instance)
             WorkerManager.instance = new WorkerManager()
-        }
-    
+
         return WorkerManager.instance
     }
 }

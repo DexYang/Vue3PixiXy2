@@ -16,7 +16,7 @@ useTitle(settings.title)
     <div v-if="!resourcesState.isResourceLoaded" bg-dark h-100vh>
         <div class="window" w-360px h-100px relative m-auto top-25vh text-center>
             <div class="title-bar inactive">
-                <img src="/ico.ico" w-18px h-18px>
+                <img src="/ico.ico" w-16px h-16px>
                 {{ settings.title }}
                 <div class="title-bar-controls">
                     <button aria-label="Close" />
@@ -31,8 +31,8 @@ useTitle(settings.title)
         </div>
     </div>
     <Application v-else :width="width" :height="height" :background="0x333333">
-        <!-- <CursorLayer />
-        <TipLayer /> -->
+        <CursorLayer />
+        <!-- <TipLayer /> -->
         <component :is="scenes.Loading" />
     </Application>
 </template>

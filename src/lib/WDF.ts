@@ -1,9 +1,11 @@
-import { ResourceLoader } from "~/core/ResourceLoader"
-import { Debug } from "../utils/debug"
-import { WorkerManager } from "./WorkerManager"
-import { WAS } from "./WAS"
+import { WorkerManager } from './WorkerManager'
+import { WAS } from './WAS'
+import { useResourceState } from '~/states/modules/resource_state'
+import '~/main'
 
-const decoder = new TextDecoder("utf-8")
+const { resourcesState } = useResourceState()
+
+const decoder = new TextDecoder('utf-8')
 
 class Item {
     hash: number
@@ -12,10 +14,8 @@ class Item {
     spaces: number
 }
 
-
 export class WDF {
     id: string
-    res: ResourceLoader | null
     wm: WorkerManager | null
     path: string | null
     handle: FileSystemFileHandle | undefined
@@ -26,11 +26,10 @@ export class WDF {
 
     constructor(path: string) {
         this.id = Math.random().toString()
-        this.res = ResourceLoader.getInstance()
         this.wm = WorkerManager.getInstance()
         this.wm.register(this)
         this.path = path
-        this.handle = this.res.getResource().get(this.path)
+        this.handle = resourcesState.resources.get(this.path)
     }
 
     async setup() {
@@ -38,8 +37,8 @@ export class WDF {
             this.file = await this.handle.getFile()
             let buf: ArrayBuffer | null = await this.file.slice(0, 12).arrayBuffer()
             const flag = this.readBufToStr(buf, 0, 4)
-            if (flag !== "PFDW") {
-                Debug.warn("Incorrect WDF Format: " + this.path)
+            if (flag !== 'PFDW') {
+                console.log(`Incorrect WDF Format: ${this.path}`)
                 return
             }
             this.n = this.readBufToU32(buf, 4)
@@ -48,7 +47,7 @@ export class WDF {
             const file = this.file.slice(offset, offset + this.n * 16)
             buf = await file.arrayBuffer()
             this.map = new Map<number, Item>()
-            for(let i = 0; i < this.n; i++) {
+            for (let i = 0; i < this.n; i++) {
                 const item = new Item()
                 item.hash = this.readBufToU32(buf, i * 16)
                 item.offset = this.readBufToU32(buf, i * 16 + 4)
@@ -62,12 +61,12 @@ export class WDF {
 
     async get(hash: number) {
         const item = this.map.get(hash)
-        if (item === undefined) {
+        if (item === undefined)
             return
-        }
-        const file = this.file.slice(item.offset, item.offset  + item.size)
+
+        const file = this.file.slice(item.offset, item.offset + item.size)
         const buf: ArrayBuffer | null = await file.arrayBuffer()
-        if (this.readBufToStr(buf, 0, 2) === "SP") { // TCP TCA WAS
+        if (this.readBufToStr(buf, 0, 2) === 'SP') { // TCP TCA WAS
             return new WAS(buf)
         }
 
