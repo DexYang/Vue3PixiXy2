@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import { Container } from 'pixi.js'
+import { onMounted, ref } from 'vue'
+import { type ContainerInst } from 'vue3-pixi'
+
+const tipLayer = ref<ContainerInst>()
+
+onMounted(async () => {
+    console.log(tipLayer)
+})
 </script>
 
 <template>
-    <text :anchor="0.5" :x="320" :y="320" :style="{ fill: 'white' }">
-        Hello World11111111
-    </text>
+    <Container ref="tipLayer" />
 </template>

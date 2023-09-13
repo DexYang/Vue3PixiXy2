@@ -5,10 +5,6 @@ import { WDFManager } from '~/lib/WDFManager'
 import Cursors from '~/data/cursor'
 import { settings } from '~/settings'
 
-const app = useApplication()
-const renderer = useRenderer()
-const stage = useStage()
-
 export class Cursor extends Container {
     private static instance: Cursor
 
@@ -23,6 +19,10 @@ export class Cursor extends Container {
     }
 
     async setup() {
+        const app = useApplication()
+        const renderer = useRenderer()
+        const stage = useStage()
+
         const wdfManager = WDFManager.getInstance()
         for (const key in Cursors) {
             const was = await wdfManager.get(Cursors[key][0], Cursors[key][1])

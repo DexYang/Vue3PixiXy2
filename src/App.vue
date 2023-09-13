@@ -9,6 +9,11 @@ const { width, height } = useWindowSize()
 
 const { resourcesState, loadResource } = useResourceState()
 
+async function onClickLoad() {
+    await loadResource()
+    resourcesState.isResourceLoaded = true
+}
+
 useTitle(settings.title)
 </script>
 
@@ -25,14 +30,14 @@ useTitle(settings.title)
             <p mt-20px>
                 由于浏览器限制, 请手动选择{{ settings.title }}官方目录
             </p>
-            <button mt-10px @click="loadResource()">
+            <button mt-10px @click="onClickLoad()">
                 选择
             </button>
         </div>
     </div>
-    <Application v-else :width="width" :height="height" :background="0x333333">
-        <CursorLayer />
+    <Application v-else :width="width" :height="height" :background="0x222222">
+        <component :is="scenes.Start" />
         <!-- <TipLayer /> -->
-        <component :is="scenes.Loading" />
+        <CursorLayer />
     </Application>
 </template>

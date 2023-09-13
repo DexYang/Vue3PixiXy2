@@ -1,9 +1,9 @@
 import { WorkerManager } from './WorkerManager'
 import { WAS } from './WAS'
 import { useResourceState } from '~/states/modules/resource_state'
-import '~/main'
+import { pinia } from '~/states'
 
-const { resourcesState } = useResourceState()
+const { resourcesState } = useResourceState(pinia)
 
 const decoder = new TextDecoder('utf-8')
 
