@@ -22,4 +22,4 @@ export default {
             water_sound: { wdf: 'gires2.wdf', was_hash: '0xF7426640', loop: true }
         }
     }
-}
+} as Record<string, any>

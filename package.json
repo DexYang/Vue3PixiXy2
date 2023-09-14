@@ -28,19 +28,19 @@
     "vue3-pixi-ui": "^0.8.1"
   },
   "devDependencies": {
-    "@types/pathfinding": "^0.0.6",
-    "@antfu/eslint-config": "^0.41.0",
+    "@antfu/eslint-config": "^0.42.0",
     "@types/node": "^20.6.0",
-    "@typescript-eslint/eslint-plugin": "^6.6.0",
-    "@typescript-eslint/parser": "^6.6.0",
+    "@types/pathfinding": "^0.0.6",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
     "@vitejs/plugin-vue": "^4.3.4",
     "eslint": "^8.49.0",
-    "pnpm": "^8.7.4",
-    "typescript": "^5.2.2",
-    "vite": "^4.4.9",
-    "vue-tsc": "^1.8.10",
     "pinia": "^2.1.6",
-    "unplugin-vue-components": "^0.25.0",
-    "unocss": "^0.55.7"
+    "pnpm": "^8.7.5",
+    "typescript": "^5.2.2",
+    "unocss": "^0.55.7",
+    "unplugin-vue-components": "^0.25.2",
+    "vite": "^4.4.9",
+    "vue-tsc": "^1.8.11"
   }
 }

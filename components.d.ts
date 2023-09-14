@@ -7,11 +7,17 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AnimatedWas: typeof import('./src/components/AnimatedWas.vue')['default']
     Button: typeof import('./src/components/Button.vue')['default']
+    ButtonWas: typeof import('./src/components/ButtonWas.vue')['default']
+    copy: typeof import('./src/components/StaticWas copy.vue')['default']
     CursorLayer: typeof import('./src/components/CursorLayer.vue')['default']
     LoginScene: typeof import('./src/components/LoginScene.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StaticSprite: typeof import('./src/components/StaticSprite.vue')['default']
+    StaticWas: typeof import('./src/components/StaticWas.vue')['default']
     TipLayer: typeof import('./src/components/TipLayer.vue')['default']
+    Was: typeof import('./src/components/Was.vue')['default']
   }
 }

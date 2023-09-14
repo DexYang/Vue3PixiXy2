@@ -64,3 +64,7 @@ export class WDFManager {
         return WDFManager.instance
     }
 }
+
+export function useWDFManager(): WDFManager {
+    return WDFManager.getInstance()
+}

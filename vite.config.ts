@@ -15,7 +15,7 @@ export default defineConfig({
             template: {
                 compilerOptions: {
                     isCustomElement: (tag) => {
-                        return tag === 'yellow-text' || tag === 'Viewport' || isCustomElement(tag)
+                        return tag === 'fancy-button' || tag === 'Viewport' || isCustomElement(tag)
                     }
                 },
                 transformAssetUrls
