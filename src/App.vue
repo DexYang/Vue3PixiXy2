@@ -2,12 +2,15 @@
 import { Application } from 'vue3-pixi'
 import { useTitle, useWindowSize } from '@vueuse/core'
 import { useResourceState } from '~/states/modules/resource_state'
+import { useScenesState } from '~/states/modules/scenes_state'
 import { settings } from '~/settings'
 import scenes from '~/scenes'
 
 const { width, height } = useWindowSize()
 
 const { resourcesState, loadResource } = useResourceState()
+
+const { scenesState } = useScenesState()
 
 async function onClickLoad() {
     await loadResource()
@@ -36,7 +39,7 @@ useTitle(settings.title)
         </div>
     </div>
     <Application v-else :width="width" :height="height" :background="0x222222">
-        <component :is="scenes.Start" />
+        <component :is="scenes[scenesState.current_scene]" />
         <!-- <TipLayer /> -->
         <CursorLayer />
     </Application>

@@ -12,7 +12,7 @@ const saveFiles = ['save']
 
 const exploreFiles = ['scene', 'newscene', 'font']
 
-export const useResourceState = defineStore('scenes', () => {
+export const useResourceState = defineStore('resource', () => {
     const resourcesState: Ref<IResourceState> = ref({
         isResourceLoaded: false,
         resources: new Map<string, FileSystemFileHandle>()

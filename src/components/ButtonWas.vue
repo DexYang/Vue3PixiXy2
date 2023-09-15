@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Sprite } from 'pixi.js'
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useSoundManager } from '~/lib/SoundManager'
 import { WAS } from '~/lib/WAS'
 import { useWDFManager } from '~/lib/WDFManager'
@@ -37,15 +37,20 @@ const hoverView = ref()
 const buttonDown = sounds.button_down
 
 onMounted(async () => {
-    const was = await wdfManager.get(props.wdf, props.pathHash)
+    let was = await wdfManager.get(props.wdf, props.pathHash)
     if (was instanceof WAS) {
         defaultView.value = new Sprite(was.readFrames()[0][0].texture)
         pressedView.value = new Sprite(was.readFrames()[0][1].texture)
         hoverView.value = new Sprite(was.readFrames()[0][2].texture)
     }
+    was = undefined
     fbRef.value!.onPress.connect(async () => {
         await emit('click')
     })
+})
+
+onBeforeUnmount(() => {
+    fbRef.value!.destroy(true)
 })
 </script>
 

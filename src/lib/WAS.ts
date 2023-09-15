@@ -103,12 +103,14 @@ export class WAS {
 
                 const frame_buf = this.buf.slice(frame_offset, frame_offset + 16 + frame_size)
 
+                let frame_data = this.readFrame(frame_buf, palBuffer, w, h)
                 frame.texture = Texture.fromBuffer(
-                    this.readFrame(frame_buf, palBuffer, w, h),
+                    frame_data,
                     w,
                     h,
                     { format: FORMATS.RGBA }
                 )
+                frame_data = null
                 frame.time = this.seq && this.seq.length > 0 ? duration * this.seq[j] : duration
 
                 frame.texture.defaultAnchor.set(x / w, y / h)
@@ -121,7 +123,7 @@ export class WAS {
     }
 
     readFrame(buf: ArrayBuffer, palBuffer: number, w: number, h: number) {
-        const uint8Array = new Uint8Array(buf)
+        let uint8Array: Uint8Array | null = new Uint8Array(buf)
         const inBuffer = Module._malloc(buf.byteLength)
         Module.HEAP8.set(uint8Array, inBuffer)
         const outSize = w * h * 4
@@ -136,7 +138,7 @@ export class WAS {
 
         Module._free(inBuffer)
         Module._free(outBuffer)
-
+        uint8Array = null
         return res
     }
 
