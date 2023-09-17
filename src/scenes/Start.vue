@@ -12,7 +12,7 @@ function 进入游戏() {
 }
 
 function 注册账号() {
-    console.log('注册账号 22')
+    console.log('注册账号')
 }
 
 function 退出游戏() {

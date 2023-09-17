@@ -8,7 +8,7 @@ const res: any = conf[settings.ui_prefer]
 const { switchScene, scenesState } = useScenesState()
 
 function 登录() {
-    console.log('登录 11')
+    switchScene('World')
 }
 
 function 取消() {

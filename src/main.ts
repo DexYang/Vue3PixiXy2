@@ -8,6 +8,10 @@ import '~/elements'
 
 renderer.use(UIRenderer)
 
+document.oncontextmenu = document.body.oncontextmenu = function (event) {
+    event.preventDefault()
+}
+
 createApp(App)
     . use(pinia)
     . mount('#app')

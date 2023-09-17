@@ -12,6 +12,7 @@ declare module 'vue' {
     ButtonWas: typeof import('./src/components/ButtonWas.vue')['default']
     copy: typeof import('./src/components/StaticWas copy.vue')['default']
     CursorLayer: typeof import('./src/components/CursorLayer.vue')['default']
+    GameScene: typeof import('./src/components/GameScene.vue')['default']
     LoginScene: typeof import('./src/components/LoginScene.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
