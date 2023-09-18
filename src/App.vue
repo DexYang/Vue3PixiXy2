@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Application } from 'vue3-pixi'
-import { useTitle, useWindowSize } from '@vueuse/core'
+import { useFps, useTitle, useWindowSize } from '@vueuse/core'
 import { useResourceState } from '~/states/modules/resource_state'
 import { useScenesState } from '~/states/modules/scenes_state'
 import { settings } from '~/settings'
@@ -12,15 +12,15 @@ const { resourcesState, loadResource } = useResourceState()
 
 const { scenesState } = useScenesState()
 
-async function onClickLoad() {
-    await loadResource()
-    resourcesState.isResourceLoaded = true
-}
-
 useTitle(settings.title)
+
+const fps = useFps()
 </script>
 
 <template>
+    <div absolute text-white>
+        {{ fps }}
+    </div>
     <div v-if="!resourcesState.isResourceLoaded" bg-dark h-100vh>
         <div class="window" w-360px h-100px relative m-auto top-25vh text-center>
             <div class="title-bar inactive">
@@ -33,14 +33,17 @@ useTitle(settings.title)
             <p mt-20px>
                 由于浏览器限制, 请手动选择{{ settings.title }}官方目录
             </p>
-            <button mt-10px @click="onClickLoad()">
+            <button mt-10px @click="loadResource">
                 选择
             </button>
         </div>
     </div>
+
     <Application v-else :width="width" :height="height" :background="0x222222">
-        <component :is="scenes[scenesState.current_scene]" />
-        <!-- <TipLayer /> -->
+        <AlphaTransition>
+            <component :is="scenes[scenesState.current_scene]" />
+        </AlphaTransition>
+        <TipLayer />
         <CursorLayer />
     </Application>
 </template>

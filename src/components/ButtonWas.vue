@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Sprite } from 'pixi.js'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 import { useSoundManager } from '~/lib/SoundManager'
 import { WAS } from '~/lib/WAS'
 import { useWDFManager } from '~/lib/WDFManager'
@@ -30,9 +30,9 @@ const sndManager = useSoundManager()
 
 const fbRef = ref()
 
-const defaultView = ref()
-const pressedView = ref()
-const hoverView = ref()
+const defaultView = shallowRef()
+const pressedView = shallowRef()
+const hoverView = shallowRef()
 
 const buttonDown = sounds.button_down
 

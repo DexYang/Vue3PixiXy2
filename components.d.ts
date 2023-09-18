@@ -7,12 +7,14 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AlphaTransition: typeof import('./src/components/AlphaTransition.vue')['default']
     AnimatedWas: typeof import('./src/components/AnimatedWas.vue')['default']
     ButtonWas: typeof import('./src/components/ButtonWas.vue')['default']
     CursorLayer: typeof import('./src/components/CursorLayer.vue')['default']
     GameScene: typeof import('./src/components/GameScene.vue')['default']
     LoginScene: typeof import('./src/components/LoginScene.vue')['default']
     StaticWas: typeof import('./src/components/StaticWas.vue')['default']
+    Tip: typeof import('./src/components/Tip.vue')['default']
     TipLayer: typeof import('./src/components/TipLayer.vue')['default']
   }
 }

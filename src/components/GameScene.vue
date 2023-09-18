@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, shallowRef } from 'vue'
+
 import type { ContainerInst } from 'vue3-pixi'
 import { onTick, useApplication } from 'vue3-pixi'
 import { Viewport } from 'pixi-viewport'
@@ -25,25 +26,27 @@ const shapeLayer = ref<ContainerInst>()
 
 const app = useApplication()
 
-const mapx = ref<MapX>()
+const mapx = shallowRef<MapX>()
 
 const worldWidth = computed(() => mapx.value?.width)
 const worldHeight = computed(() => mapx.value?.height)
 
-const player = ref<Character>()
+const player = shallowRef<Character>()
 
 const loaded = ref(false)
 
 const { width, height } = useWindowSize()
 
 function onMapRightClick(event: FederatedPointerEvent) {
-    const path = mapx.value!.path_find(
-        player.value!.position._x,
-        player.value!.position._y,
-        viewportRef.value!.left + event.x,
-        viewportRef.value!.top + event.y
-    )
-    player.value!.setNewTarget(path, true)
+    queueMicrotask(() => {
+        const path = mapx.value!.path_find(
+            player.value!.position._x,
+            player.value!.position._y,
+            viewportRef.value!.left + event.x,
+            viewportRef.value!.top + event.y
+        )
+        player.value!.setNewTarget(path, true)
+    })
 }
 
 function updateWindow() {

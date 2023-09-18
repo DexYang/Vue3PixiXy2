@@ -2,17 +2,20 @@
 import conf from '~/data/login/start_scene'
 import { settings } from '~/settings'
 import { useScenesState } from '~/states/modules/scenes_state'
+import { useTipState } from '~/states/modules/tip_state'
 
 const res: any = conf[settings.ui_prefer]
 
 const { switchScene, scenesState } = useScenesState()
+
+const { notify } = useTipState()
 
 function 进入游戏() {
     switchScene('Login')
 }
 
 function 注册账号() {
-    console.log('注册账号')
+    notify('啊啊啊啊啊啊啊')
 }
 
 function 退出游戏() {

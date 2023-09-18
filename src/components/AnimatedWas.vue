@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, shallowRef } from 'vue'
+
 import type { Frame } from '~/lib/WAS'
 import { WAS } from '~/lib/WAS'
 import { useWDFManager } from '~/lib/WDFManager'
@@ -18,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const wdfManager = useWDFManager()
 
-const textures = ref<Array<Frame>>()
+const textures = shallowRef<Array<Frame>>()
 const loaded = ref(false)
 
 const anchor: Ref<[number, number]> = ref([0, 0])
