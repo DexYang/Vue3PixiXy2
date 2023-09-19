@@ -2,6 +2,7 @@
 import { Container } from 'pixi.js'
 import { onMounted, ref } from 'vue'
 import { type ContainerInst } from 'vue3-pixi'
+import Tip from './Tip.vue'
 import { useTipState } from '~/states/modules/tip_state'
 
 const { tipsState } = useTipState()
@@ -15,16 +16,13 @@ onMounted(async () => {
 
 <template>
     <Container ref="tipLayer">
-        <text
-            v-for="(item, index) in tipsState"
-            :key="index"
-            :text="item.text"
-            :style="{ fill: 'yellow' }" />
-        <tip
+        <Tip
             v-for="(item, index) in tipsState"
             :id="item.id"
             :key="index"
             :index="item.index"
-            :text="item.text" />
+            :text="item.text"
+            :x="item.x"
+            :y="item.y" />
     </Container>
 </template>

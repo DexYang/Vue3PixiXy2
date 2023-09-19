@@ -1,3 +1,6 @@
+import { FORMATS, Texture } from 'pixi.js'
+import type { IDecodedTga } from '@lunapaint/tga-codec'
+import { decodeTga } from '@lunapaint/tga-codec'
 import { WorkerManager } from './WorkerManager'
 import { WAS } from './WAS'
 import { useResourceState } from '~/states/modules/resource_state'
@@ -66,8 +69,28 @@ export class WDF {
 
         const file = this.file.slice(item.offset, item.offset + item.size)
         const buf: ArrayBuffer | null = await file.arrayBuffer()
-        if (this.readBufToStr(buf, 0, 2) === 'SP') { // TCP TCA WAS
+        const mark = this.readBufToStr(buf, 0, 2)
+        if (mark === 'SP') { // TCP TCA WAS
             return new WAS(buf)
+        }
+        else if (mark === '\x00\x00') {
+            let decoded: IDecodedTga | null = await decodeTga(new Uint8Array(buf))
+            const texture = Texture.fromBuffer(
+                decoded.image.data,
+                decoded.image.width,
+                decoded.image.height,
+                { format: FORMATS.RGBA }
+            )
+            decoded = null
+            return texture
+        }
+        else if (mark === '\xFF\xD8' || mark === 'BM') {
+            let buf_blob: Blob | null = new Blob([buf], { type: 'image/tga' })
+            const bitmap = await createImageBitmap(buf_blob)
+            const texture = Texture.from(bitmap)
+            buf_blob = null
+            bitmap.close()
+            return texture
         }
 
         return buf

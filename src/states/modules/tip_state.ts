@@ -15,15 +15,13 @@ export const useTipState = defineStore('tips', () => {
     const tipsState: Ref<Array<ITip>> = ref([])
 
     const remove = (index: number, id: string) => {
-        if (tipsState.value[index].id === id) {
-            console.log('index', tipsState.value)
-            tipsState.value = tipsState.value.splice(index, 1)
+        if (tipsState.value[index] && tipsState.value[index].id === id) {
+            tipsState.value.splice(index, 1)
         }
         else {
             for (let i = 0; i < tipsState.value.length; i++) {
                 if (tipsState.value[i].id === id) {
-                    console.log('id', tipsState.value)
-                    tipsState.value = tipsState.value.splice(i, 1)
+                    tipsState.value.splice(i, 1)
                     return
                 }
             }

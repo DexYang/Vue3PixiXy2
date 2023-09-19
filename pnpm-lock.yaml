@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@lunapaint/tga-codec':
+    specifier: ^0.1.0
+    version: 0.1.0
   '@pixi-essentials/cull':
     specifier: ^2.0.0
     version: 2.0.0(@pixi/display@7.2.4)(@pixi/math@7.2.4)
@@ -571,6 +574,10 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
+
+  /@lunapaint/tga-codec@0.1.0:
+    resolution: {integrity: sha512-omqHZCF7UDI+2SMjYNTHYLGakbQetoJYBZk+wsxmsUrUXmDot7orqJZBYB4cM7scwzm+0Hm8C07bfgNSmRAxhA==}
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
