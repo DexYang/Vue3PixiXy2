@@ -13,6 +13,7 @@ declare module 'vue' {
     CursorLayer: typeof import('./src/components/CursorLayer.vue')['default']
     GameScene: typeof import('./src/components/GameScene.vue')['default']
     LoginScene: typeof import('./src/components/LoginScene.vue')['default']
+    RichText: typeof import('./src/components/RichText.vue')['default']
     StaticWas: typeof import('./src/components/StaticWas.vue')['default']
     Tip: typeof import('./src/components/Tip.vue')['default']
     TipLayer: typeof import('./src/components/TipLayer.vue')['default']

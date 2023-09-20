@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { directoryOpen } from 'browser-fs-access'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import fontData from '~/data/font'
 
 interface IResourceState {
     isResourceLoaded: boolean
@@ -17,6 +18,30 @@ export const useResourceState = defineStore('resource', () => {
         isResourceLoaded: false,
         resources: new Map<string, FileSystemFileHandle>()
     })
+
+    const save = async (json: string) => {
+        console.log(json, saveFiles)
+    }
+
+    const loadFont = async () => {
+        for (const font_name in fontData) {
+            const font_path = fontData[font_name]
+            try {
+                const handle = resourcesState.value.resources.get(font_path)
+                if (handle) {
+                    const file = await handle.getFile()
+                    const font_buf: ArrayBuffer | null = await file.arrayBuffer()
+                    const font_face = new FontFace(font_name, font_buf)
+                    const loaded_font_face = await font_face.load()
+                    document.fonts.add(loaded_font_face)
+                    console.log(`字体加载成功 - ${font_name} - ${font_path}`)
+                }
+            }
+            catch (error) {
+                console.error(`字体加载失败 - ${font_name} - ${font_path}`)
+            }
+        }
+    }
 
     const loadResource = async () => {
         const blobsInDirectory = await directoryOpen({
@@ -34,10 +59,7 @@ export const useResourceState = defineStore('resource', () => {
             }
         })
         resourcesState.value.isResourceLoaded = true
-    }
-
-    const save = async (json: string) => {
-        console.log(json, saveFiles)
+        loadFont()
     }
 
     return {
