@@ -54,8 +54,6 @@ onMounted(async () => {
         :right-width="20"
         :bottom-height="20"
         :position="[(width - tipWidth) / 2 + x, (height - tipHeight) / 2 + y]">
-        <text :style="{ fill: 'Yellow', fontFamily: '隶书' }">
-            {{ props.text }}
-        </text>
+        <rich-text :text="props.text" :width="320" :x="20" :y="10" />
     </nine-slice-plane>
 </template>

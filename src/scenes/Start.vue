@@ -19,7 +19,7 @@ function 注册账号() {
 }
 
 function 退出游戏() {
-
+    notify('#24qweqweqweqweq#R#n#213123#35')
 }
 
 const actions: Record<string, () => void> = { 进入游戏, 注册账号, 退出游戏 }
