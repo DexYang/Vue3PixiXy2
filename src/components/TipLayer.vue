@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Container } from 'pixi.js'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { type ContainerInst } from 'vue3-pixi'
 import Tip from './Tip.vue'
 import { useTipState } from '~/states/modules/tip_state'
@@ -8,10 +8,6 @@ import { useTipState } from '~/states/modules/tip_state'
 const { tipsState } = useTipState()
 
 const tipLayer = ref<ContainerInst>()
-
-onMounted(async () => {
-    console.log(tipLayer)
-})
 </script>
 
 <template>

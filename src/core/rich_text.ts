@@ -92,16 +92,20 @@ export async function rebuild(
             for (let j = 0; j < item.length; j++) {
                 const s = item[j]
                 text += s
-                line.width += getStrWidth(s) * fontSize // 当前行，增加宽度
+                line.width += getStrWidth(s) * fontSize + 1// 当前行，增加宽度
                 if (line.width > width - 5) {
-                    line.items.push(new Text(text, style))
+                    const _text = new Text(text, style)
+                    _text.anchor.set(0, 1)
+                    line.items.push(_text)
                     text = ''
                     lines.push(line)
                     line = getNewLine(line, fontSize, lineHeight)
                 }
             }
             if (text !== '') {
-                line.items.push(new Text(text, style))
+                const _text = new Text(text, style)
+                _text.anchor.set(0, 1)
+                line.items.push(_text)
                 text = ''
             }
         }
@@ -109,12 +113,14 @@ export async function rebuild(
             if (item[0] === 'EMOTE') {
                 const wdfManager = useWDFManager()
                 const was: WAS = await wdfManager.get(emoteWdf, emotePath(item[1])) as WAS
-                const frames = was.readFrames(settings.action_duration)
+                const frames = was.readFrames(settings.emote_duration)
                 const ani = new AnimatedSprite(frames[0], true)
                 ani.updateAnchor = true
-                ani.visible = false
                 ani.eventMode = 'none'
+                // ani.anchor.set(was.x / was.width, was.y / was.height)
                 ani.play()
+                ani.x = was.x
+                ani.y = was.y
                 ani.visible = true
                 line.items.push(ani)
                 line.width += ani.width
@@ -147,22 +153,29 @@ export async function rebuild(
     if (line.items.length > 0)
         lines.push(line)
 
+    let maxWidth = 0
+    let maxHeight = 0
+
     const res = []
     for (let i = 0; i < lines.length; i++) {
         const _line = lines[i]
         let x = 0
         const y = _line.y
+        let lineWidth = 0
         for (let j = 0; j < _line.items.length; j++) {
             const item = _line.items[j]
-            item.position = [x, y + _line.height - item.height + 2]
-            item.x = x
-            item.y = y + _line.height - item.height + 2
-            x += item.width + 2
+            lineWidth += item.width
+            // item.position = [x, y + _line.height]
+            item.x += x
+            item.y = y + _line.height
+            x += item.width
             res.push(item)
         }
+        maxWidth = Math.max(lineWidth, maxWidth)
+        maxHeight = _line.y + _line.height
     }
 
-    return res
+    return { children: res, width: maxWidth, height: maxHeight }
 }
 
 function getNewLine(line: Line, fontSize: number, lineHeight: number) {
@@ -184,8 +197,8 @@ function getStrWidth(s: string) {
 export async function getRichText(
     text: string,
     width = 100,
-    fontFamily = 'Arial, Helvetica, sans-serif',
-    fontSize = 16,
+    fontFamily = '\"Times New Roman\", Times, serif',
+    fontSize = 14,
     lineHeight = 5
 ) {
     const contents = translate(text)

@@ -40,6 +40,11 @@ onMounted(async () => {
     }
     tex = undefined
 })
+
+function updateWH(obj: { width: number; height: number }) {
+    tipWidth.value = Math.max(obj.width + 40, 360)
+    tipHeight.value = Math.max(obj.height + 20, 60)
+}
 </script>
 
 <template>
@@ -54,6 +59,6 @@ onMounted(async () => {
         :right-width="20"
         :bottom-height="20"
         :position="[(width - tipWidth) / 2 + x, (height - tipHeight) / 2 + y]">
-        <rich-text :text="props.text" :width="320" :x="20" :y="10" />
+        <rich-text :text="props.text" :width="320" :x="20" :y="10" @update="updateWH" />
     </nine-slice-plane>
 </template>

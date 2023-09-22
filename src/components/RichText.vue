@@ -23,12 +23,14 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits(['update'])
+
 const containerRef = ref<ContainerInst>()
 
 onMounted(async () => {
-    const children = await getRichText(`#Y${props.text}`, props.width)
-    containerRef.value!.addChild(...children)
-    console.log(containerRef.value)
+    const res = await getRichText(`#Y${props.text}`, props.width)
+    containerRef.value!.addChild(...res.children)
+    emit('update', { width: res.width, height: res.height })
 })
 </script>
 

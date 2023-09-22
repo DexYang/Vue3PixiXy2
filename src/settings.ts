@@ -3,6 +3,7 @@ export const settings = {
     ui_prefer: '红木',
     ui_duration: 100,
     action_duration: 100,
+    emote_duration: 120,
     walk_speed: 2,
     run_speed: 4
 }
