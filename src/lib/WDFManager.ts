@@ -1,3 +1,4 @@
+import str2gbk from 'str2gbk'
 import type { WDF } from '~/lib/WDF'
 import { getWDF } from '~/lib/WDF'
 
@@ -26,7 +27,7 @@ export class WDFManager {
                 hash = Number.parseInt(path_or_hash, 16)
             }
             else {
-                const strBuffer = new TextEncoder().encode(path_or_hash)
+                const strBuffer = str2gbk(path_or_hash)
                 const strPointer = Module._malloc(strBuffer.length + 1)
                 Module.HEAP8.set(strBuffer, strPointer)
                 Module.HEAP8[strPointer + strBuffer.length] = 0 // 以 0 结尾
@@ -51,8 +52,7 @@ export class WDFManager {
             hash = path_or_hash
         }
 
-        // Debug.log("WDF资源读取[" + wdf + ":" + path_or_hash + "], hash: " + hash + "")
-
+        console.log(`WDF资源读取[${wdf}:${path_or_hash}], hash: ${hash}`)
         const item = await wdf_instance?.get(hash)
         return item
     }

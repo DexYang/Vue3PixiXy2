@@ -8,17 +8,20 @@ import { useWDFManager } from '~/lib/WDFManager'
 const props = withDefaults(defineProps<Props>(), {
     position: () => [0, 0],
     anchor: 0,
-    zIndex: 0
+    zIndex: 0,
+    width: 0
 })
 
 const eleRef = ref<SpriteInst>()
 
 interface Props {
-    wdf: string
-    pathHash: string
+    res?: { wdf: string; was_hash: string }
+    wdf?: string
+    pathHash?: string
     anchor?: number | [number, number]
     position?: number | [number, number]
     zIndex?: number
+    width?: number
 }
 
 const wdfManager = useWDFManager()
@@ -29,7 +32,14 @@ const loaded = ref(false)
 onBeforeMount(async () => {
     if (loaded.value)
         return
-    let was = await wdfManager.get(props.wdf, props.pathHash)
+    let was
+    if (props.res) {
+        was = await wdfManager.get(props.res.wdf, props.res.was_hash)
+        console.log(props.res, was, 12)
+    }
+    else if (props.wdf && props.pathHash) {
+        was = await wdfManager.get(props.wdf, props.pathHash)
+    }
     if (was instanceof WAS) {
         texture.value = was.readFrames()[0][0].texture
         loaded.value = true

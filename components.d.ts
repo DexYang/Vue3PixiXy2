@@ -17,5 +17,6 @@ declare module 'vue' {
     StaticWas: typeof import('./src/components/StaticWas.vue')['default']
     Tip: typeof import('./src/components/Tip.vue')['default']
     TipLayer: typeof import('./src/components/TipLayer.vue')['default']
+    WorldUI: typeof import('./src/components/WorldUI.vue')['default']
   }
 }
