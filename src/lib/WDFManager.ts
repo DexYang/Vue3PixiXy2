@@ -52,7 +52,7 @@ export class WDFManager {
             hash = path_or_hash
         }
 
-        console.log(`WDF资源读取[${wdf}:${path_or_hash}], hash: ${hash}`)
+        // console.log(`WDF资源读取[${wdf}:${path_or_hash}], hash: ${hash}`)
         const item = await wdf_instance?.get(hash)
         return item
     }

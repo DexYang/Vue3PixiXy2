@@ -20,6 +20,7 @@ const fps = useFps()
 <template>
     <div absolute text-white>
         {{ fps }}
+        <input class="bg-transparent border-0 focus:outline-0">
     </div>
     <div v-if="!resourcesState.isResourceLoaded" bg-dark h-100vh>
         <div class="window" w-360px h-100px relative m-auto top-25vh text-center>

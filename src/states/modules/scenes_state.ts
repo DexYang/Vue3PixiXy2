@@ -8,7 +8,7 @@ interface IScenesState {
 
 export const useScenesState = defineStore('scenes', () => {
     const scenesState: Ref<IScenesState> = ref({
-        current_scene: 'World'
+        current_scene: 'Start'
     })
 
     const switchScene = async (scene: string) => {

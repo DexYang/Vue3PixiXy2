@@ -55,5 +55,7 @@ onBeforeMount(async () => {
         :texture="texture"
         :anchor="anchor"
         :position="position"
-        :z-index="zIndex" />
+        :z-index="zIndex">
+        <slot />
+    </sprite>
 </template>
