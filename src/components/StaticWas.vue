@@ -33,13 +33,10 @@ onBeforeMount(async () => {
     if (loaded.value)
         return
     let was
-    if (props.res) {
+    if (props.res)
         was = await wdfManager.get(props.res.wdf, props.res.was_hash)
-        console.log(props.res, was, 12)
-    }
-    else if (props.wdf && props.pathHash) {
+    else if (props.wdf && props.pathHash)
         was = await wdfManager.get(props.wdf, props.pathHash)
-    }
     if (was instanceof WAS) {
         texture.value = was.readFrames()[0][0].texture
         loaded.value = true

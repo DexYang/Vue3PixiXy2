@@ -35,6 +35,9 @@ dependencies:
   pathfinding:
     specifier: ^0.4.18
     version: 0.4.18
+  peerjs:
+    specifier: ^1.5.1
+    version: 1.5.1
   pixi-viewport:
     specifier: ^5.0.2
     version: 5.0.2
@@ -267,6 +270,54 @@ packages:
       '@babel/helper-string-parser': 7.21.5
       '@babel/helper-validator-identifier': 7.22.15
       to-fast-properties: 2.0.0
+
+  /@cbor-extract/cbor-extract-darwin-arm64@2.1.1:
+    resolution: {integrity: sha512-blVBy5MXz6m36Vx0DfLd7PChOQKEs8lK2bD1WJn/vVgG4FXZiZmZb2GECHFvVPA5T7OnODd9xZiL3nMCv6QUhA==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@cbor-extract/cbor-extract-darwin-x64@2.1.1:
+    resolution: {integrity: sha512-h6KFOzqk8jXTvkOftyRIWGrd7sKQzQv2jVdTL9nKSf3D2drCvQB/LHUxAOpPXo3pv2clDtKs3xnHalpEh3rDsw==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@cbor-extract/cbor-extract-linux-arm64@2.1.1:
+    resolution: {integrity: sha512-SxAaRcYf8S0QHaMc7gvRSiTSr7nUYMqbUdErBEu+HYA4Q6UNydx1VwFE68hGcp1qvxcy9yT5U7gA+a5XikfwSQ==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@cbor-extract/cbor-extract-linux-arm@2.1.1:
+    resolution: {integrity: sha512-ds0uikdcIGUjPyraV4oJqyVE5gl/qYBpa/Wnh6l6xLE2lj/hwnjT2XcZCChdXwW/YFZ1LUHs6waoYN8PmK0nKQ==}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@cbor-extract/cbor-extract-linux-x64@2.1.1:
+    resolution: {integrity: sha512-GVK+8fNIE9lJQHAlhOROYiI0Yd4bAZ4u++C2ZjlkS3YmO6hi+FUxe6Dqm+OKWTcMpL/l71N6CQAmaRcb4zyJuA==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@cbor-extract/cbor-extract-win32-x64@2.1.1:
+    resolution: {integrity: sha512-2Niq1C41dCRIDeD8LddiH+mxGlO7HJ612Ll3D/E73ZWBmycued+8ghTr/Ho3CMOWPUEr08XtyBMVXAjqF+TcKw==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
 
   /@es-joy/jsdoccomment@0.40.1:
     resolution: {integrity: sha512-YORCdZSusAlBrFpZ77pJjc5r1bQs5caPWtAu+WWmiSo+8XaUzseapVrfAtiRFbQWnrBxxLLEwF6f6ZG/UgCQCg==}
@@ -580,6 +631,11 @@ packages:
 
   /@lunapaint/tga-codec@0.1.0:
     resolution: {integrity: sha512-omqHZCF7UDI+2SMjYNTHYLGakbQetoJYBZk+wsxmsUrUXmDot7orqJZBYB4cM7scwzm+0Hm8C07bfgNSmRAxhA==}
+    dev: false
+
+  /@msgpack/msgpack@2.8.0:
+    resolution: {integrity: sha512-h9u4u/jiIRKbq25PM+zymTyW6bhTzELvOoUd+AvYriWOAKpLGnIamaET3pnHYoI5iYphAHBI4ayx0MehR+VVPQ==}
+    engines: {node: '>= 10'}
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
@@ -1762,6 +1818,28 @@ packages:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
     dev: true
+
+  /cbor-extract@2.1.1:
+    resolution: {integrity: sha512-1UX977+L+zOJHsp0mWFG13GLwO6ucKgSmSW6JTl8B9GUvACvHeIVpFqhU92299Z6PfD09aTXDell5p+lp1rUFA==}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      node-gyp-build-optional-packages: 5.0.3
+    optionalDependencies:
+      '@cbor-extract/cbor-extract-darwin-arm64': 2.1.1
+      '@cbor-extract/cbor-extract-darwin-x64': 2.1.1
+      '@cbor-extract/cbor-extract-linux-arm': 2.1.1
+      '@cbor-extract/cbor-extract-linux-arm64': 2.1.1
+      '@cbor-extract/cbor-extract-linux-x64': 2.1.1
+      '@cbor-extract/cbor-extract-win32-x64': 2.1.1
+    dev: false
+    optional: true
+
+  /cbor-x@1.5.4:
+    resolution: {integrity: sha512-PVKILDn+Rf6MRhhcyzGXi5eizn1i0i3F8Fe6UMMxXBnWkalq9+C5+VTmlIjAYM4iF2IYF2N+zToqAfYOp+3rfw==}
+    optionalDependencies:
+      cbor-extract: 2.1.1
+    dev: false
 
   /chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -2990,6 +3068,13 @@ packages:
     resolution: {integrity: sha512-F5kfEj95kX8tkDhUCYdV8dg3/8Olx/94zB8+ZNthFs6Bz31UpUi8Xh40TN3thLwXgrwXry1pEg9lJ++tLWTcqA==}
     dev: true
 
+  /node-gyp-build-optional-packages@5.0.3:
+    resolution: {integrity: sha512-k75jcVzk5wnnc/FMxsf4udAoTEUv2jY3ycfdSd3yWu6Cnd1oee6/CfZJApyscA4FJOmdoixWwiwOyf16RzD5JA==}
+    hasBin: true
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
     dependencies:
@@ -3143,6 +3228,22 @@ packages:
     resolution: {integrity: sha512-R0TGEQ9GRcFCDvAWlJAWC+KGJ9SLbW4c0nuZRcioVlXVTlw+F5RvXQ8SQgSqI9KXWC1ew95vgmIiyaWTlCe9Ag==}
     dependencies:
       heap: 0.2.5
+    dev: false
+
+  /peerjs-js-binarypack@2.0.0:
+    resolution: {integrity: sha512-wu+L0Qeg4IH2DXm3B6xKP5ODeCIovwEEO/Fu3MVqApPQeVLzSdZpFzQzPobh+sdhUWMQGEO7YxHeiwpPngLjqQ==}
+    engines: {node: '>= 14.0.0'}
+    dev: false
+
+  /peerjs@1.5.1:
+    resolution: {integrity: sha512-jpE2jPZ99vuSVHBAhn7bVCPKlwsPgcAqgcDKEZR4L7SaMaEL6wqD/G6VI0+awmhuEFcUN2ttusly+sKQGD64hQ==}
+    engines: {node: '>= 14'}
+    dependencies:
+      '@msgpack/msgpack': 2.8.0
+      cbor-x: 1.5.4
+      eventemitter3: 4.0.7
+      peerjs-js-binarypack: 2.0.0
+      webrtc-adapter: 8.2.3
     dev: false
 
   /perfect-debounce@1.0.0:
@@ -3365,6 +3466,10 @@ packages:
     dependencies:
       queue-microtask: 1.2.3
     dev: true
+
+  /sdp@3.2.0:
+    resolution: {integrity: sha512-d7wDPgDV3DDiqulJjKiV2865wKsJ34YI+NDREbm+FySq6WuKOikwyNQcm+doLAZ1O6ltdO0SeKle2xMpN3Brgw==}
+    dev: false
 
   /semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
@@ -3828,6 +3933,13 @@ packages:
   /webpack-virtual-modules@0.5.0:
     resolution: {integrity: sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==}
     dev: true
+
+  /webrtc-adapter@8.2.3:
+    resolution: {integrity: sha512-gnmRz++suzmvxtp3ehQts6s2JtAGPuDPjA1F3a9ckNpG1kYdYuHWYpazoAnL9FS5/B21tKlhkorbdCXat0+4xQ==}
+    engines: {node: '>=6.0.0', npm: '>=3.10.0'}
+    dependencies:
+      sdp: 3.2.0
+    dev: false
 
   /which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}

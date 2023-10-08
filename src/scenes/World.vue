@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import type { ContainerInst } from 'vue3-pixi'
+import { usePlayerState } from '~/states/modules/players_state'
+import { scenes } from '~/scenes'
 
 // import { useScenesState } from '~/states/modules/scenes_state'
 
@@ -8,16 +10,14 @@ import type { ContainerInst } from 'vue3-pixi'
 
 const uiLayer = ref<ContainerInst>()
 
-// const windowLayer = ref<ContainerInst>()
+const { getPrimary } = usePlayerState()
 
-onMounted(() => {
-    console.log(uiLayer.value)
-})
+const map_id = scenes[getPrimary.data.map].map_id
 </script>
 
 <template>
     <Container>
-        <GameScene map-id="newscene/1410.map" />
+        <GameScene :key="map_id" :map-id="map_id" />
         <WorldUI ref="uiLayer" />
     </Container>
 </template>

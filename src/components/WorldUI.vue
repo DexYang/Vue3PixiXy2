@@ -75,7 +75,7 @@ function handle(name: string | number) {
     (actions[name] ?? (() => console.log('not found action')))()
 }
 
-const chatFrameWidth = computed(() => width.value - 420)
+const chatFrameWidth = computed(() => Math.max(width.value - 420, 100))
 const inputWidth = computed(() => `width: ${chatFrameWidth.value - 50}px`)
 </script>
 
@@ -102,8 +102,8 @@ const inputWidth = computed(() => `width: ${chatFrameWidth.value - 50}px`)
             :width="chatFrameWidth"
             :height="25"
             :top="25"
-            :left="100"
-            :right="100"
+            :left="50"
+            :right="50"
             :bottom="0">
             <External tag="div" class="absolute! left-50px bottom-0 m-0 p-0">
                 <input v-model="inputValue" class="bg-transparent border-0 focus:outline-0 font-sans text-white h-26px" :style="inputWidth">

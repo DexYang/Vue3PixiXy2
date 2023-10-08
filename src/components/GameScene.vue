@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed, onMounted, ref, shallowRef } from 'vue'
-
 import type { ContainerInst } from 'vue3-pixi'
 import { onTick, useApplication } from 'vue3-pixi'
 import { Viewport } from 'pixi-viewport'
@@ -10,8 +9,7 @@ import { Sprite } from 'pixi.js'
 import { useWindowSize } from '@vueuse/core'
 import type { MapX } from '~/lib/MapX'
 import { getMapX } from '~/lib/MapX'
-import type { Character } from '~/core/character'
-import { getCharacter } from '~/core/character'
+import { usePlayerState } from '~/states/modules/players_state'
 
 const props = defineProps({
     mapId: {
@@ -19,33 +17,34 @@ const props = defineProps({
         required: true
     }
 })
-
 const viewportRef = ref<Viewport>()
 const mapLayer = ref<ContainerInst>()
 const shapeLayer = ref<ContainerInst>()
 
 const app = useApplication()
+const { width, height } = useWindowSize()
 
 const mapx = shallowRef<MapX>()
-
 const worldWidth = computed(() => mapx.value?.width)
 const worldHeight = computed(() => mapx.value?.height)
 
-const player = shallowRef<Character>()
-
 const loaded = ref(false)
 
-const { width, height } = useWindowSize()
+const { getPrimary, getPlayers } = usePlayerState()
+
+console.log(getPlayers)
+
+const primaryPlayer: Player = getPrimary
 
 function onMapRightClick(event: FederatedPointerEvent) {
     queueMicrotask(() => {
         const path = mapx.value!.path_find(
-            player.value!.position._x,
-            player.value!.position._y,
+            primaryPlayer.data.x,
+            primaryPlayer.data.y,
             viewportRef.value!.left + event.x,
             viewportRef.value!.top + event.y
         )
-        player.value!.setNewTarget(path, true)
+        primaryPlayer!.character!.setNewTarget(path, true)
     })
 }
 
@@ -53,10 +52,14 @@ function updateWindow() {
     if (!loaded.value)
         return
     const { start_col, end_col, start_row, end_row } = getWindow()
-    for (let i = start_row; i <= end_row; i++) {
-        for (let j = start_col; j <= end_col; j++) {
+    const max_col = Math.min(end_col, mapx.value!.col_num - 1)
+    const max_row = Math.min(end_row, mapx.value!.row_num - 1)
+    for (let i = start_row; i <= max_row; i++) {
+        for (let j = start_col; j <= max_col; j++) {
             const block_index = i * mapx.value!.col_num + j
             const block = mapx.value!.blocks[block_index]
+            if (block_index >= mapx.value.block_num)
+                continue
             if (!block.requested) {
                 mapx.value!.getJpeg(block_index)
             }
@@ -92,8 +95,8 @@ function updateWindow() {
 }
 
 function getWindow() {
-    const x = player.value!.position.x
-    const y = player.value!.position.y
+    const x = primaryPlayer.data.x
+    const y = primaryPlayer.data.y
     const innerWidth = window.innerWidth
     const innerHeight = window.innerHeight
 
@@ -117,18 +120,15 @@ function getWindow() {
 onTick(() => updateWindow())
 
 onMounted(async () => {
-    player.value = await getCharacter(1)
-    player.value.position.set(800, 800)
-
     mapx.value = await getMapX(props.mapId)
     viewportRef.value!.clamp({
         direction: 'all',
         underflow: 'center'
     })
-    viewportRef.value!.follow(player.value)
+    viewportRef.value!.follow(primaryPlayer.character!)
     viewportRef.value!.resize()
 
-    shapeLayer.value!.addChild(player.value)
+    shapeLayer.value!.addChild(primaryPlayer.character!)
 
     loaded.value = true
 })

@@ -27,7 +27,8 @@
     "vue3-pixi": "^0.8.1",
     "vue3-pixi-ui": "^0.8.1",
     "@lunapaint/tga-codec": "^0.1.0",
-    "str2gbk": "^0.0.5"
+    "str2gbk": "^0.0.5",
+    "peerjs": "^1.5.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.42.0",
