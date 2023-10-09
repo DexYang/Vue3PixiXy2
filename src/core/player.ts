@@ -20,7 +20,7 @@ export interface IPlayer {
 
     y: number
 
-    character?: Character
+    watchMapChange: () => void
 }
 
 export class Player {

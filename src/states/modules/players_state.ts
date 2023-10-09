@@ -10,6 +10,11 @@ interface IAccountState {
     primary: string
 }
 
+interface IPlayerState {
+    MapIndex: Record<string, Set<string>>
+    logId: number
+}
+
 export const usePlayerState = defineStore('player', () => {
     const playersPool = ref<Record<string, Player>>({})
 
@@ -19,7 +24,11 @@ export const usePlayerState = defineStore('player', () => {
         primary: ''
     })
 
-    const playerState = ref<Record<string, Set<string>>>({})
+    // 按地图索引players
+    const playerState = ref<IPlayerState>({
+        MapIndex: {},
+        logId: 0
+    })
 
     const login = async (account: string) => {
         const storage = useAccountStorage(account)
@@ -35,20 +44,20 @@ export const usePlayerState = defineStore('player', () => {
 
             playersPool.value[key] = await getPlayer(data)
             accountState.value.players.add(key)
-        }
 
-        // watch(storage.value.players, () => {
-        //     playerState.value = {}
-        //     Object.keys(storage.value!.players).forEach(async (id) => {
-        //         const data = storage.value!.players[id]
-        //         const map = data.map
-        //         const key = `${account}/${id}`
-        //         if (!(map in playerState.value))
-        //             playerState.value[map] = new Set<string>()
-        //         playerState.value[map].add(key)
-        //     })
-        //     console.log('>>>', playerState.value)
-        // })
+            data.watchMapChange = watch(() => data.map, () => {
+                playerState.value.MapIndex = {}
+
+                Object.keys(storage.value!.players).forEach(async (id) => {
+                    const data = storage.value!.players[id]
+                    const map = data.map
+                    const key = `${account}/${id}`
+                    if (!(map in playerState.value.MapIndex))
+                        playerState.value.MapIndex[map] = new Set<string>()
+                    playerState.value.MapIndex[map].add(key)
+                })
+            }, { immediate: true })
+        }
     }
 
     const primary = computed({
@@ -58,25 +67,24 @@ export const usePlayerState = defineStore('player', () => {
 
     const getPrimary = computed(() => playersPool.value[primary.value])
 
-    // const getPlayers = computed(() => {
-    //     const res: Array<Player> = []
-    //     console.log('<<<<<<<<<<<')
-    //     const map = getPrimary.value.data.map
-    //     const mapPlayerSet = playerState.value[map]
-    //     if (!mapPlayerSet)
-    //         return []
-    //     mapPlayerSet.forEach((key) => {
-    //         res.push(playersPool.value[key])
-    //     })
-    //     return res
-    // })
+    const getPlayers = computed(() => {
+        const res: Array<Player> = []
+        const map = getPrimary.value.data.map
+        const mapPlayerSet = playerState.value.MapIndex[map]
+        if (!mapPlayerSet)
+            return []
+        mapPlayerSet.forEach((key) => {
+            res.push(playersPool.value[key])
+        })
+        return res
+    })
 
     return {
-        accountState: computed(() => accountState),
+        accountState,
         primary,
         getPrimary,
         login,
-        playerState
-        // getPlayers
+        playerState,
+        getPlayers
     }
 })

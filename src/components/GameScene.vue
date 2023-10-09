@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { computed, onMounted, ref, shallowRef } from 'vue'
+import { storeToRefs } from 'pinia'
 import type { ContainerInst } from 'vue3-pixi'
 import { onTick, useApplication } from 'vue3-pixi'
 import { Viewport } from 'pixi-viewport'
@@ -30,21 +31,20 @@ const worldHeight = computed(() => mapx.value?.height)
 
 const loaded = ref(false)
 
-const { getPrimary, getPlayers } = usePlayerState()
+const usePlayerStateSetup = usePlayerState()
+const { getPrimary, getPlayers } = storeToRefs(usePlayerStateSetup)
 
-console.log(getPlayers)
-
-const primaryPlayer: Player = getPrimary
+const primaryPlayer = getPrimary
 
 function onMapRightClick(event: FederatedPointerEvent) {
     queueMicrotask(() => {
         const path = mapx.value!.path_find(
-            primaryPlayer.data.x,
-            primaryPlayer.data.y,
+            primaryPlayer.value.data.x,
+            primaryPlayer.value.data.y,
             viewportRef.value!.left + event.x,
             viewportRef.value!.top + event.y
         )
-        primaryPlayer!.character!.setNewTarget(path, true)
+        primaryPlayer.value!.character!.setNewTarget(path, true)
     })
 }
 
@@ -95,8 +95,8 @@ function updateWindow() {
 }
 
 function getWindow() {
-    const x = primaryPlayer.data.x
-    const y = primaryPlayer.data.y
+    const x = primaryPlayer.value.data.x
+    const y = primaryPlayer.value.data.y
     const innerWidth = window.innerWidth
     const innerHeight = window.innerHeight
 
@@ -125,10 +125,16 @@ onMounted(async () => {
         direction: 'all',
         underflow: 'center'
     })
-    viewportRef.value!.follow(primaryPlayer.character!)
+
+    viewportRef.value!.follow(primaryPlayer.value.character!)
     viewportRef.value!.resize()
 
-    shapeLayer.value!.addChild(primaryPlayer.character!)
+    // shapeLayer.value!.addChild(primaryPlayer.value.character!)
+
+    getPlayers.value.forEach((item) => {
+        // console.log(item.character === primaryPlayer.value.character)
+        shapeLayer.value!.addChild(item.character!)
+    })
 
     loaded.value = true
 })

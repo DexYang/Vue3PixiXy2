@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, ref } from 'vue'
 import type { ContainerInst } from 'vue3-pixi'
+import { storeToRefs } from 'pinia'
 import { usePlayerState } from '~/states/modules/players_state'
 import { scenes } from '~/scenes'
 
@@ -10,9 +11,10 @@ import { scenes } from '~/scenes'
 
 const uiLayer = ref<ContainerInst>()
 
-const { getPrimary } = usePlayerState()
+const usePlayerStateSetup = usePlayerState()
+const { getPrimary } = storeToRefs(usePlayerStateSetup)
 
-const map_id = scenes[getPrimary.data.map].map_id
+const map_id = scenes[getPrimary.value.data.map].map_id
 </script>
 
 <template>
