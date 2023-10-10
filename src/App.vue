@@ -57,7 +57,18 @@ async function click() {
         </div>
     </div>
 
-    <Application v-else :width="width" :height="height" :background="0x000000">
+    <Application
+        v-else
+        :width="width"
+        :height="height"
+        :background="0x000000"
+        event-mode="passive"
+        :event-features="{
+            move: true,
+            globalMove: false,
+            click: true,
+            wheel: true,
+        }">
         <AlphaTransition>
             <component :is="components[scenesState.current_scene]" />
         </AlphaTransition>

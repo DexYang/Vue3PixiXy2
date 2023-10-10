@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, onMounted, ref, shallowRef } from 'vue'
+import { computed, onMounted, ref, shallowRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { ContainerInst } from 'vue3-pixi'
 import { onTick, useApplication } from 'vue3-pixi'
@@ -44,7 +44,7 @@ function onMapRightClick(event: FederatedPointerEvent) {
             viewportRef.value!.left + event.x,
             viewportRef.value!.top + event.y
         )
-        primaryPlayer.value!.character!.setNewTarget(path, true)
+        primaryPlayer.value!.setNewTarget(path, true)
     })
 }
 
@@ -119,6 +119,17 @@ function getWindow() {
 
 onTick(() => updateWindow())
 
+watch(getPlayers, () => {
+    shapeLayer.value!.removeChildren()
+    getPlayers.value.forEach((item) => {
+        shapeLayer.value!.addChild(item!)
+    })
+})
+
+watch(primaryPlayer, () => {
+    viewportRef.value!.follow(primaryPlayer.value!)
+})
+
 onMounted(async () => {
     mapx.value = await getMapX(props.mapId)
     viewportRef.value!.clamp({
@@ -126,14 +137,11 @@ onMounted(async () => {
         underflow: 'center'
     })
 
-    viewportRef.value!.follow(primaryPlayer.value.character!)
+    viewportRef.value!.follow(primaryPlayer.value!)
     viewportRef.value!.resize()
 
-    // shapeLayer.value!.addChild(primaryPlayer.value.character!)
-
     getPlayers.value.forEach((item) => {
-        // console.log(item.character === primaryPlayer.value.character)
-        shapeLayer.value!.addChild(item.character!)
+        shapeLayer.value!.addChild(item!)
     })
 
     loaded.value = true

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, shallowRef, watch } from 'vue'
 import type { Player } from '~/core/player'
 import { getPlayer } from '~/core/player'
 import { type IAccount, useAccountStorage } from '~/storage/account'
@@ -16,7 +16,7 @@ interface IPlayerState {
 }
 
 export const usePlayerState = defineStore('player', () => {
-    const playersPool = ref<Record<string, Player>>({})
+    const playersPool = shallowRef<Record<string, Player>>({})
 
     const accountState = ref<IAccountState>({
         account: '',
@@ -38,6 +38,7 @@ export const usePlayerState = defineStore('player', () => {
         for (id in storage.value.players) {
             const data = storage.value.players[id]
             const key = `${account}/${id}`
+            data.key = key
 
             if (accountState.value.primary === '')
                 accountState.value.primary = key

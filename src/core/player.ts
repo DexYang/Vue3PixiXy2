@@ -1,7 +1,10 @@
-import type { Character } from './character'
-import { getCharacter } from './character'
+import { storeToRefs } from 'pinia'
+import { Character } from './character'
+import { usePlayerState } from '~/states/modules/players_state'
 
 export interface IPlayer {
+    key?: string
+
     id: string
 
     char_id: number
@@ -20,31 +23,29 @@ export interface IPlayer {
 
     y: number
 
-    watchMapChange: () => void
+    watchMapChange?: () => void
 }
 
-export class Player {
-    data: IPlayer
-
-    character: Character
-
+export class Player extends Character<IPlayer> {
     constructor(data: IPlayer) {
+        super(data.char_id)
         this.data = data
-    }
-
-    async setup(data: IPlayer) {
-        this.character = await getCharacter(this.data.char_id)
-        this.character.position.set(this.data.x, this.data.y)
-        this.character.position.cb = function () {
+        this.position.set(this.data.x, this.data.y)
+        this.position.cb = function () {
             this._localID++
             data.x = this.position._x
             data.y = this.position._y
         }
+        this.on('click', () => {
+            const usePlayerStateSetup = usePlayerState()
+            const { primary } = storeToRefs(usePlayerStateSetup)
+            primary.value = this.data.key!
+        })
     }
 }
 
 export async function getPlayer(data: any) {
     const player = new Player(data)
-    await player.setup(data)
+    await player.setup()
     return player
 }

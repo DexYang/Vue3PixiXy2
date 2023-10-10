@@ -11,7 +11,7 @@ export class State extends Container<AnimatedSprite> {
 
     hash_or_path: string | number
 
-    declare parent: Character
+    declare parent: Character<any>
 
     constructor(wdf: string, hash_or_path: string | number) {
         super()
@@ -31,7 +31,7 @@ export class State extends Container<AnimatedSprite> {
             ani.updateAnchor = true
             ani.anchor.set(was.x / was.width, was.y / was.height)
             ani.visible = false
-            ani.eventMode = 'none'
+            ani.eventMode = 'static'
             this.addChild(ani)
         }
     }

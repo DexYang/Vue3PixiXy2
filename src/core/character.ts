@@ -8,7 +8,7 @@ import { settings } from '~/settings'
 
 const states: Array<string> = ['stand', 'stand2', 'walk', 'run']
 
-export class Character extends Container {
+export class Character<T> extends Container {
     direction: number
 
     states: Record<string, State>
@@ -27,6 +27,8 @@ export class Character extends Container {
 
     is_running: boolean
 
+    data: T
+
     constructor(char_id: number) {
         super()
         this.char_id = char_id
@@ -35,6 +37,7 @@ export class Character extends Container {
         this.target_list = []
         this.is_running = false
         this.is_new_target = false
+        this.eventMode = 'static'
     }
 
     async setup() {
