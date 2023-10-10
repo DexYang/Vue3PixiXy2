@@ -16,6 +16,10 @@ const props = defineProps({
     mapId: {
         type: String as PropType<string>,
         required: true
+    },
+    portals: {
+        type: Array<any>,
+        default: []
     }
 })
 const viewportRef = ref<Viewport>()
@@ -119,10 +123,26 @@ function getWindow() {
 
 onTick(() => updateWindow())
 
+const currentPlayers: Set<string> = new Set()
+
 watch(getPlayers, () => {
-    shapeLayer.value!.removeChildren()
+    const temp = {}
+    currentPlayers.forEach(key => temp[key] = true)
+
+    currentPlayers.clear()
     getPlayers.value.forEach((item) => {
-        shapeLayer.value!.addChild(item!)
+        currentPlayers.add(item.name)
+        if (item.name in temp) // 已存在的player，跳过
+            temp[item.name] = false
+        else if (shapeLayer.value) // 新player
+            shapeLayer.value!.addChild(item)
+    })
+
+    Object.keys(temp).forEach((key) => {
+        if (temp[key]) {
+            const child = shapeLayer.value!.getChildByName(key, false)
+            shapeLayer.value!.removeChild(child)
+        }
     })
 })
 
@@ -140,8 +160,30 @@ onMounted(async () => {
     viewportRef.value!.follow(primaryPlayer.value!)
     viewportRef.value!.resize()
 
+    currentPlayers.clear()
+
     getPlayers.value.forEach((item) => {
-        shapeLayer.value!.addChild(item!)
+        shapeLayer.value!.addChild(item)
+        currentPlayers.add(item.name)
+    })
+
+    shapeLayer.value.on('sort', (item) => {
+        if (item instanceof Character) {
+            item.zIndex = item.y
+            const block_index = Math.floor(item.y / 240) * mapx.value.col_num + Math.floor(item.x / 320)
+            const ownMasks = mapx.value.blocks[block_index].ownMasks
+
+            for (let i = 0; i < ownMasks.length; i++) {
+                const mask = mapx.value.masks[ownMasks[i]]
+                if (mask.calc_sort_z(item.x, item.y)) {
+                    item.zIndex = Math.max(item.zIndex, mask.z + 1)
+                    item.zOrder = item.zIndex
+                }
+            }
+        }
+        else {
+            item.zIndex = item.y
+        }
     })
 
     loaded.value = true
@@ -161,6 +203,14 @@ onMounted(async () => {
             ref="mapLayer"
             event-mode="static"
             @right-click="onMapRightClick" />
+        <Portal
+            v-for="(item, index) in props.portals"
+            :key="index"
+            :x="item.x"
+            :y="item.y"
+            :target="item.target"
+            :target-x="item.targetX"
+            :target-y="item.targetY" />
         <Container
             ref="shapeLayer"
             :alpha="1"

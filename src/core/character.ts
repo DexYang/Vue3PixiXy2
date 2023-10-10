@@ -122,6 +122,12 @@ export class Character<T> extends Container {
         return false
     }
 
+    reset() {
+        this.switchState('stand')
+        this.is_new_target = false
+        this.target = this.position
+    }
+
     isOnTarget() {
         return this.position.subtract(this.target).magnitude() < 5
     }

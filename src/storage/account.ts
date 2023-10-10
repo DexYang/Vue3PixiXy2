@@ -10,6 +10,7 @@ const theDefault = {
     account: 'default',
     players: {
         1: {
+            key: '',
             id: '1',
             char_id: 1,
             name: '名字',

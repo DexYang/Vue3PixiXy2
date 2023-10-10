@@ -6,6 +6,14 @@ const components = {
     World: defineAsyncComponent(() => import('./World.vue'))
 } as Record<string, any>
 
+export interface IPortal {
+    x: number
+    y: number
+    target: string
+    targetX: number
+    targetY: number
+}
+
 interface IScene {
     map_id: string
     portals: Array<object>
@@ -16,8 +24,10 @@ const scenes: Record<string, IScene> = {}
 
 async function load() {
     const map_pool = import.meta.glob('./**/index.ts')
+    const map_keys = Object.keys(map_pool)
 
-    await Object.keys(map_pool).forEach(async (key) => {
+    for (let i = 0; i < map_keys.length; i++) {
+        const key = map_keys[i]
         const nameMatch = key.match(/^\.\/(.+)\/index\.ts/)
         if (!nameMatch)
             return
@@ -27,17 +37,18 @@ async function load() {
             portals: module.portals ? module.portals : [],
             npc: {}
         }
-    })
+    }
 
     const npc_pool = import.meta.glob('./**/npc/**.ts')
-
-    await Object.keys(npc_pool).forEach(async (key) => {
+    const npc_keys = Object.keys(npc_pool)
+    for (let i = 0; i < npc_keys.length; i++) {
+        const key = npc_keys[i]
         const nameMatch = key.match(/^\.\/(.+)\/npc\/(.+)\.ts/)
         if (!nameMatch)
             return
         const module: any = await npc_pool[key]()
         scenes[nameMatch[1]]['npc'][nameMatch[2]] = module
-    })
+    }
 }
 
 load()

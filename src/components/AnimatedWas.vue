@@ -11,6 +11,7 @@ interface Props {
     pathHash: string
     position?: number | [number, number]
     zIndex?: number
+    eventMode?: string
 }
 const props = withDefaults(defineProps<Props>(), {
     position: () => [0, 0],
@@ -45,6 +46,7 @@ onMounted(async () => {
         :update-anchor="true"
         :playing="true"
         :anchor="anchor"
+        :event-mode="eventMode"
         :position="position"
         :z-index="zIndex" />
 </template>
