@@ -14,12 +14,12 @@ const uiLayer = ref<ContainerInst>()
 const usePlayerStateSetup = usePlayerState()
 const { getPrimary } = storeToRefs(usePlayerStateSetup)
 
-const map_id = computed(() => scenes[getPrimary.value.data.map].map_id)
-const portals = computed(() => scenes[getPrimary.value.data.map].portals)
+const map_id = computed(() => getPrimary.value ? scenes[getPrimary.value.data.map].map_id : '')
+const portals = computed(() => getPrimary.value ? scenes[getPrimary.value.data.map].portals : [])
 </script>
 
 <template>
-    <Container>
+    <Container v-if="map_id !== ''">
         <GameScene :key="map_id" :map-id="map_id" :portals="portals" />
         <WorldUI ref="uiLayer" />
     </Container>

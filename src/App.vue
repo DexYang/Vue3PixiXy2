@@ -7,7 +7,8 @@ import { useResourceState } from '~/states/modules/resource_state'
 import { useScenesState } from '~/states/modules/scenes_state'
 import { settings } from '~/settings'
 import { components } from '~/scenes'
-import { usePlayerState } from '~/states/modules/players_state'
+import { useAccountState } from '~/states/modules/account_state'
+import { usePeerState } from '~/states/modules/peer_state'
 
 const { width, height } = useWindowSize()
 
@@ -19,13 +20,16 @@ useTitle(settings.title)
 
 const fps = useFps()
 
+const value = ref('')
+const { peer, connect } = usePeerState()
+
 // const peer = new Peer()
 
 // peer.on('open', (id) => {
 //     console.log(`My peer ID is: ${id}`)
 // })
 
-const { login } = usePlayerState()
+const { login } = useAccountState()
 const map = ref('')
 
 async function click() {
@@ -37,7 +41,10 @@ async function click() {
 <template>
     <div absolute text-white>
         fps: {{ fps }} {{ map }}
-        <input class="bg-transparent border-0 focus:outline-0">
+        <input v-model="value" class="bg-transparent border-0 focus:outline-0 text-white">
+        <button @click="connect(value)">
+            啊啊啊
+        </button>
     </div>
     <div v-if="!resourcesState.isResourceLoaded" bg-dark h-100vh>
         <div class="window" w-360px h-100px relative m-auto top-25vh text-center>

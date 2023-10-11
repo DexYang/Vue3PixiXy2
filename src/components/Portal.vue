@@ -19,8 +19,6 @@ watch(() => getPrimary.value.data.x, () => {
     if (Math.abs(props.x - _x) < 10 && Math.abs(props.y - _y) < 10) {
         getPrimary.value.data.map = props.target
         getPrimary.value.reset()
-        getPrimary.value.data.x = props.targetX
-        getPrimary.value.data.y = props.targetY
         getPrimary.value.position.set(props.targetX, props.targetY)
     }
 })
