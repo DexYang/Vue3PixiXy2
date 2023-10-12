@@ -3,6 +3,7 @@ import type { DataConnection } from 'peerjs'
 import { Peer } from 'peerjs'
 import { useTimeoutFn, watchDebounced, watchThrottled } from '@vueuse/core'
 import { computed, reactive, ref, toRefs } from 'vue'
+import { Point } from 'pixi.js'
 import { useAccountState } from './account_state'
 import type { IPlayer, Player } from '~/core/player'
 import { useAccountStorage } from '~/storage/account'
@@ -47,8 +48,8 @@ export const usePeerState = defineStore('peer', () => {
             }
             else if (data.type && data.type === 'path') {
                 const id = data.id
-                // data.path中元素应包装为Point
-                // remoteData.value[conn.peer][id].parent.setNewTarget(data.path, data.running)
+                const path = data.path.map((item: any) => new Point(item.x, item.y))
+                remoteData.value[conn.peer][id].parent!.setNewTarget(path, data.running)
             }
         }
     }
