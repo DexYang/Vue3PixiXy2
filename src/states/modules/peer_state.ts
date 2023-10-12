@@ -2,7 +2,7 @@ import { defineStore, storeToRefs } from 'pinia'
 import type { DataConnection } from 'peerjs'
 import { Peer } from 'peerjs'
 import { useTimeoutFn, watchDebounced, watchThrottled } from '@vueuse/core'
-import { computed, ref, shallowRef, watch } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import { useAccountState } from './account_state'
 import type { IPlayer, Player } from '~/core/player'
 import { useAccountStorage } from '~/storage/account'
@@ -32,9 +32,24 @@ export const usePeerState = defineStore('peer', () => {
             if (data.type && data.type === 'players') {
                 if (!(conn.peer in remoteData.value))
                     remoteData.value[conn.peer] = {}
-                remoteData.value[conn.peer] = data.players
+                for (const id in data.players) { // 遍历传来的各player
+                    delete data.players[id]['key']
+                    if (id in remoteData.value[conn.peer]) { // 如果已存在
+                        for (const [k, v] of Object.entries(data.players[id])) {
+                            // @ts-expect-error any
+                            remoteData.value[conn.peer][id][k] = v
+                        }
+                    }
+                    else {
+                        remoteData.value[conn.peer][id] = ref(data.players[id])
+                    }
+                }
             }
-            console.log(remoteData.value)
+            else if (data.type && data.type === 'path') {
+                const id = data.id
+                // data.path中元素应包装为Point
+                // remoteData.value[conn.peer][id].parent.setNewTarget(data.path, data.running)
+            }
         }
     }
 

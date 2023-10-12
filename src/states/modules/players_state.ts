@@ -47,13 +47,15 @@ export const usePlayerState = defineStore('player', () => {
         }
     }, { immediate: true })
 
+    // Remote player watch
     watch(() => Object.keys(remoteData.value).length, async () => {
-        console.log('REMOTE LOAD', remoteData.value, playersPool)
+        console.log('REMOTE LOAD', remoteData.value)
         for (const peerId in remoteData.value) {
             const players = remoteData.value[peerId]
             for (const id in players) {
-                const key = `${peerId}/${id}`
                 const data = players[id]
+                const key = `${peerId}/${id}`
+                data.key = key
 
                 playersPool.value[key] = await getPlayer(data)
 

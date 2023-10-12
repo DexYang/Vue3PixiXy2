@@ -8,6 +8,7 @@ import { Viewport } from 'pixi-viewport'
 import type { FederatedPointerEvent } from 'pixi.js'
 import { Sprite } from 'pixi.js'
 import { useWindowSize } from '@vueuse/core'
+import { usePeerState } from '~/states/modules/peer_state'
 import type { MapX } from '~/lib/MapX'
 import { getMapX } from '~/lib/MapX'
 import { usePlayerState } from '~/states/modules/players_state'
@@ -40,6 +41,8 @@ const { getPrimary, getPlayers } = storeToRefs(usePlayerStateSetup)
 
 const primaryPlayer = getPrimary
 
+const { broadcast } = usePeerState()
+
 function onMapRightClick(event: FederatedPointerEvent) {
     queueMicrotask(() => {
         const path = mapx.value!.path_find(
@@ -49,6 +52,12 @@ function onMapRightClick(event: FederatedPointerEvent) {
             viewportRef.value!.top + event.y
         )
         primaryPlayer.value!.setNewTarget(path, true)
+        broadcast({
+            type: 'path',
+            path,
+            id: primaryPlayer.value.data.id,
+            running: true
+        })
     })
 }
 

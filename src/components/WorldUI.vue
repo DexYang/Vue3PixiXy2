@@ -3,14 +3,19 @@ import { useWindowSize } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import type { ContainerInst } from 'vue3-pixi'
 import { External } from 'vue3-pixi'
+import { storeToRefs } from 'pinia'
 import { settings } from '~/settings'
 import conf from '~/data/ui/world'
+import { usePlayerState } from '~/states/modules/players_state'
 
 const res: any = conf[settings.ui_prefer]
 
 const uiLayerRef = ref<ContainerInst>()
 
 const { width, height } = useWindowSize()
+
+const usePlayerStateSetup = usePlayerState()
+const { getPrimary } = storeToRefs(usePlayerStateSetup)
 
 const inputValue = ref('')
 
@@ -106,7 +111,7 @@ const inputWidth = computed(() => `width: ${chatFrameWidth.value - 50}px`)
             :right="50"
             :bottom="0">
             <External tag="div" class="absolute! left-50px bottom-0 m-0 p-0">
-                <input v-model="inputValue" class="bg-transparent border-0 focus:outline-0 font-sans text-white h-26px" :style="inputWidth">
+                <input v-model="getPrimary.data.name" class="bg-transparent border-0 focus:outline-0 font-sans text-white h-26px" :style="inputWidth">
             </External>
         </nine-slice>
         <ButtonWas
